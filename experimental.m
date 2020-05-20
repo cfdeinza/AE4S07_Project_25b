@@ -59,17 +59,17 @@ mdotNew = ((Ipc.*Ateff.*sqrt(y.*((1+y)/2).^((y+1)/(1-y))))./...
     sqrt(Ra./Mw.*(T1.*Lh.*Mw)./(Lh.*Mw+T1.*Ra.*log(p1./Ipc))));
 VdotNew = mdotNew.*(3.6e9)./rho;
 QdotNew = mdotNew.*(cpL.*(Tvap-(T0+273.15))+Lh);
-Ipc = Ipc./100000;
+Ipc = Ipc./100000; % Converting pressure to bar
 % Polynomials describing linear approximations:
 BPol = polyfit(Bpc,BPavg,1);
 LPol = polyfit(Lpc,LPavg,1);
 WPol = polyfit(Wpc,WPavg,1);
 IPol = polyfit(Ipc,Qdot,1);
-% R^2 values:
-BR2 = determination(BPavg, polyval(BPol,Bpc));
-LR2 = determination(LPavg, polyval(LPol,Lpc));
-WR2 = determination(WPavg, polyval(WPol,Wpc));
-IR2 = determination(Qdot, polyval(IPol,Ipc));
+% RMSE values:
+BR = rootMeanSquared(BPavg, polyval(BPol,Bpc));
+LR = rootMeanSquared(LPavg, polyval(LPol,Lpc));
+WR = rootMeanSquared(WPavg, polyval(WPol,Wpc));
+IR = rootMeanSquared(Qdot, polyval(IPol,Ipc));
 % Power consumption efficiency:
 Bn_data = Qdot([1,2,4])./BPavg;
 Bpc_vec = Bpc(1):0.001:pcMax;
@@ -97,33 +97,25 @@ green = [0.4660, 0.6740, 0.1880];
 figure('DefaultAxesFontSize',14) % Just data points
 hold on
 B=plot(Bpc, BPavg, 'x', 'Color', blue, 'MarkerSize', 10, 'LineWidth', 1.5);
-%errorbar(Bpc,BPavg,Berr, 'Color', blue, 'LineStyle', 'none')
 L=plot(Lpc, LPavg, 'o', 'Color', red, 'MarkerSize', 10, 'LineWidth', 1.5);
-%errorbar(Lpc,LPavg,Lerr, 'Color', red, 'LineStyle', 'none')
 W=plot(Wpc, WPavg, '*', 'Color', green, 'MarkerSize', 10, 'LineWidth', 1.5);
-%errorbar(Wpc,WPavg,Werr, 'Color', green, 'LineStyle', 'none')
 I=plot(Ipc, Qdot, '+', 'Color', yellow, 'MarkerSize', 10, 'LineWidth', 1.5);
 xlabel('$p_c\;[bar]$'); ylabel('$\dot{Q}\;[W]$'); grid on;
 legend([B,L,W,I], 'BS2', 'Ld1', 'Ws1', 'Ideal', 'location', 'northwest')
-
 
 figure('DefaultAxesFontSize',14) % Linear approx (all together)
 hold on
 B=plot(Bpc, BPavg, 'x', 'Color', blue, 'MarkerSize', 10, 'LineWidth', 1.5);
 Blin=plot(Bpc, polyval(BPol, Bpc), 'Color', blue, 'LineWidth', 1);
-%errorbar(Bpc,BPavg,Berr, 'Color', blue, 'LineStyle', 'none')
 L=plot(Lpc, LPavg, 'o', 'Color', red, 'MarkerSize', 10, 'LineWidth', 1.5);
 Llin=plot(Lpc, polyval(LPol, Lpc), 'Color', red, 'LineWidth', 1);
-%errorbar(Lpc,LPavg,Lerr, 'Color', red, 'LineStyle', 'none')
 W=plot(Wpc, WPavg, '*', 'Color', green, 'MarkerSize', 10, 'LineWidth', 1.5);
 Wlin=plot(Wpc, polyval(WPol, Wpc), 'Color', green, 'LineWidth', 1);
-%errorbar(Wpc,WPavg,Werr, 'Color', green, 'LineStyle', 'none')
 I=plot(Ipc, Qdot, '+', 'Color', yellow, 'MarkerSize', 10, 'LineWidth', 1.5);
 Ilin=plot(Ipc, polyval(IPol, Ipc), 'Color', yellow, 'LineWidth', 1);
 xlabel('$p_c\;[bar]$'); ylabel('$\dot{Q}\;[W]$'); grid on;
 legend([Blin,Llin,Wlin,Ilin], 'BS2 linear approx.', 'Ld1 linear approx.',...
     'Ws1 linear approx.', 'Ideal linear approx.', 'location', 'northwest')
-
 
 figure('DefaultAxesFontSize',14) % Efficiency
 subplot(1,3,1)
@@ -190,10 +182,8 @@ xlabel('$p_c\;[bar]$'); ylabel('$\dot{Q}\;[W]$'); grid on; title('Ws1'); ylim([0
 legend([Wlin, Ilin], '$\dot{Q}_m$ linear fit', '$\dot{Q}_{id}$ linear fit',...
     'location', 'northwest')
 %}
-function [R2] = determination(yi, fi)
-ei = yi - fi;
-ybar = sum(yi)./length(yi);
-SStot = sum((yi-ybar).^2);
-SSres = sum(ei.^2);
-R2 = 1 - SSres./SStot;
+function [RMSE] = rootMeanSquared(yi, fi)
+ei = yi - fi; % Difference between measurement and linear fit
+MSE = sum(ei.^2)./length(ei); % Mean squared error
+RMSE = sqrt(MSE); % Root mean squared error [W]
 end
