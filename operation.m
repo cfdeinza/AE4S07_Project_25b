@@ -1,8 +1,9 @@
-function [pc, Tvap, Vdot, Q, F, Vg, Vp, tvec, I] = operation(thruster, Vrat)
+function [pc, Tvap, Vdot, mdot, Q, F, Vg, Vp, tvec, I] = operation(thruster, Vrat)
 % This function returns the following parameters propagated in time:
 % pc: Chamber pressure [Pa]
 % Tvap: Vaporization temperature [K]
 % Vdot: Volume flow rate [m^3/s]
+% mdot: Mass flow rate [kg/s]
 % Q: Power required [W]
 % F: Thrust [N]
 % Vg: Volume of pressurant gas [m^3]
@@ -50,7 +51,7 @@ F(1) = mdot(1).*ve(1) + (prat.*pc(1)).*(thruster.wd).*(100e-6); % Ideal thrust [
 Fmin = 0.12e-3; % Minimum thrust [N]
 %pcForMaxF = 0.003./(At.*G.*sqrt(2.*y./(y-1).*(1-prat.^((y-1)./y)))+prat.*Arat.*At)./1e5
 i = 2;
-while Vp(i-1) > 0 && F(i-1) > Fmin %pc(i-1) > 0.1789e5
+while Vp(i-1) > 0 %&& F(i-1) > Fmin %pc(i-1) > 0.1789e5
     Vg(i) = Vg(i-1) + Vdot(i-1).*dt; % [m^3]
     pc(i) = pc(i-1).*Vg(i-1)./Vg(i); % [Pa]
     
