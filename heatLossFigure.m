@@ -20,6 +20,12 @@ WTs = [47, 45, 46]+273; % Assumed surface temp [K]
 [Wpc, WQdot, WQcond, WQconv, WQrad] = heatLossUniform(WVdot, WPavg, WTs);
 
 % Plot:
+
+% Change settings for text interpreter:
+set(groot, 'DefaultLegendInterpreter', 'latex')
+set(groot, 'DefaultTextInterpreter', 'latex')
+set(groot, 'DefaultAxesTickLabelInterpreter','latex')
+
 figure('DefaultAxesFontSize',14)
 subplot(1,3,1)
 hold on
@@ -51,3 +57,5 @@ plot(Wpc, WQrad, '*--', 'LineWidth', 1)
 xlabel('$p_c$ [bar]'); ylabel('Power [W]'); grid on; title('Ws2')
 legend('$Q_{elec}$', '$Q_{cond}$', '$Q_{id}$', '$Q_{conv}$', '$Q_{rad}$',...
     'location', 'northwest')
+
+reset(groot) % Reset text interpreter

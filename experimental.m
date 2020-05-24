@@ -82,13 +82,12 @@ Wpc_vec = Wpc(1):0.001:pcMax;
 Wn_vec = (IPol(1).*Wpc_vec + IPol(2))./(WPol(1).*Wpc_vec + WPol(2));
 
 %% Plots:
-%{
-%reset(groot)
+
 % Change settings for text interpreter:
 set(groot, 'DefaultLegendInterpreter', 'latex')
 set(groot, 'DefaultTextInterpreter', 'latex')
 set(groot, 'DefaultAxesTickLabelInterpreter','latex')
-%}
+% Colors:
 blue = [0, 0.4470, 0.7410];
 red = [0.8500, 0.3250, 0.0980];
 yellow = [0.9290, 0.6940, 0.1250];
@@ -134,54 +133,8 @@ W=plot(Wpc_vec, Wn_vec, 'Color', green);
 plot(Wpc, Wn_data, '*', 'Color', green, 'MarkerSize', 10, 'LineWidth', 1.5)
 xlabel('$p_c$ [bar]'); ylabel('$\eta$ [-]'); grid on; title('Ws1')
 
-%{
-% Old figures:
-figure('DefaultAxesFontSize',14) % Changes due to effective A*
-subplot(1,2,1)
-hold on
-plot(Ipc, IVdot, 'x--', 'Color', red, 'MarkerSize', 8, 'LineWidth', 1)
-plot(Ipc, VdotNew, 'o--', 'Color', blue, 'MarkerSize', 8, 'LineWidth', 1)
-xlabel('$p_c$ [bar]'); ylabel('$\dot{m}$ [ml/h]'); grid on;
-legend('$A^*_{design}$', '$A^*_{eff}$', 'location', 'northwest')
-subplot(1,2,2)
-hold on
-plot(Ipc, Qdot, 'x--', 'Color', red, 'MarkerSize', 8, 'LineWidth', 1)
-plot(Ipc, QdotNew, 'o--', 'Color', blue, 'MarkerSize', 8, 'LineWidth', 1)
-xlabel('$p_c$ [bar]'); ylabel('$\dot{Q}_{id}$ [W]'); grid on;
-legend('$A^*_{design}$', '$A^*_{eff}$', 'location', 'northwest')
+reset(groot) % Reset text interpreter
 
-figure() % Linear approx subplots
-subplot(1,3,1)
-hold on
-plot(Bpc, BPavg, 'x', 'Color', blue, 'MarkerSize', 10, 'LineWidth', 1.5);
-Blin=plot(Bpc, polyval(BPol, Bpc), 'Color', blue);
-plot(Ipc, Qdot, '+', 'Color', yellow, 'MarkerSize', 10, 'LineWidth', 1.5);
-Ilin=plot(Ipc, polyval(IPol, Ipc), 'Color', yellow);
-errorbar(Bpc,BPavg,Berr, 'k', 'LineStyle', 'none')
-xlabel('$p_c\;[bar]$'); ylabel('$\dot{Q}\;[W]$'); grid on; title('BS2')
-legend([Blin, Ilin], '$\dot{Q}_m$ linear fit', '$\dot{Q}_{id}$ linear fit',...
-    'location', 'northwest')
-subplot(1,3,2)
-hold on
-plot(Lpc, LPavg, 'o', 'Color', red, 'MarkerSize', 10, 'LineWidth', 1.5);
-Llin=plot(Lpc, polyval(LPol, Lpc), 'Color', red);
-plot(Ipc, Qdot, '+', 'Color', yellow, 'MarkerSize', 10, 'LineWidth', 1.5);
-Ilin=plot(Ipc, polyval(IPol, Ipc), 'Color', yellow);
-errorbar(Lpc,LPavg,Lerr, 'k', 'LineStyle', 'none')
-xlabel('$p_c\;[bar]$'); ylabel('$\dot{Q}\;[W]$'); grid on; title('Ld1')
-legend([Llin, Ilin], '$\dot{Q}_m$ linear fit', '$\dot{Q}_{id}$ linear fit',...
-    'location', 'northwest')
-subplot(1,3,3)
-hold on
-plot(Wpc, WPavg, '*', 'Color', green, 'MarkerSize', 10, 'LineWidth', 1.5);
-Wlin=plot(Wpc, polyval(WPol, Wpc), 'Color', green);
-plot(Ipc, Qdot, '+', 'Color', yellow, 'MarkerSize', 10, 'LineWidth', 1.5);
-Ilin=plot(Ipc, polyval(IPol, Ipc), 'Color', yellow);
-errorbar(Wpc,WPavg,Werr, 'k', 'LineStyle', 'none')
-xlabel('$p_c\;[bar]$'); ylabel('$\dot{Q}\;[W]$'); grid on; title('Ws1'); ylim([0,4.5])
-legend([Wlin, Ilin], '$\dot{Q}_m$ linear fit', '$\dot{Q}_{id}$ linear fit',...
-    'location', 'northwest')
-%}
 function [RMSE] = rootMeanSquared(yi, fi)
 ei = yi - fi; % Difference between measurement and linear fit
 MSE = sum(ei.^2)./length(ei); % Mean squared error

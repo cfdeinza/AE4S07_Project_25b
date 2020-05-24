@@ -105,12 +105,5 @@ plot([0, max([tvecB,tvecL,tvecW])], [Fmin, Fmin].*1e3, 'k--')
 xlabel('Time [s]'); ylabel('$F$ [mN]'); grid on;
 title('\textbf{\textit{Thrust:}}', 'FontSize', 16)
 legend('BS2', 'Ld1', 'Ws1', 'min')
-%{
-figure() % Tank
-hold on
-plot(tvec, Vp.*1e6)
-plot(tvec, Vg.*1e6)
-plot([tvec(1), tvec(end)], [Vtube, Vtube].*1e6, '--')
-xlabel('Time [s]'); ylabel('$V$ [mL]'); grid on; title('Tank volume')
-legend('Propellant', 'Pressurant', 'Total'); ylim([0, ceil(Vtube)])
-%}
+
+reset(groot)
