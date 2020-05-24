@@ -68,3 +68,5 @@ zt = plot([pc, pcMax],[Qdot,QdotMax], 'LineWidth', 1, 'Color', yellow);
 xlabel('$p_c\;[bar]$'); ylabel('$\dot{Q}\;[W]$'); grid on; title('Ld1')
 legend([zdata,zerror,zmin,zmax,zt], 'Experimental data', 'Error',...
     'Minimum slope', 'Maximum slope', 'Ideal', 'location', 'northwest')
+
+reset(groot)

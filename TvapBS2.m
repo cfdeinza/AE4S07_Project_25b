@@ -58,3 +58,5 @@ plot(Vdot, Qdot_r, 'o--', 'MarkerSize', 8, 'LineWidth', 1)
 plot(Vdot, Qdot, 'x--', 'MarkerSize', 8, 'LineWidth', 1)
 xlabel('$\dot{m}$ [ml/h]'); ylabel('$\dot{Q}$ [W]'); grid on; title('BS2')
 legend('ambient', 'vacuum', 'location', 'northwest')
+
+reset(groot)
