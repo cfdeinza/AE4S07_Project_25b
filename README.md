@@ -11,4 +11,6 @@ This repository contains all of the Matlab scripts and functions that were used 
 
 "operationResults.m" shows the results of the simulations.
 
+The folder "thermalModel" contains the Solidworks files of the VLM thermal model (parts, assembly and drawing).
+
 The scripts "chamber_pressure.m" and "ideal_power.m" were taken from Gelmi's report.
