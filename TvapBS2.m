@@ -51,12 +51,19 @@ hold on
 plot(Vdot, Tvap_r, 'o--', 'MarkerSize', 8, 'LineWidth', 1)
 plot(Vdot, Tvap, 'x--', 'MarkerSize', 8, 'LineWidth', 1)
 xlabel('$\dot{m}$ [ml/h]'); ylabel('$T_{vap}$ [K]'); grid on; title('BS2')
-legend('ambient', 'vacuum', 'location', 'northwest')
+legend('room', 'vacuum', 'location', 'northwest')
 subplot(1,2,2)
 hold on
 plot(Vdot, Qdot_r, 'o--', 'MarkerSize', 8, 'LineWidth', 1)
 plot(Vdot, Qdot, 'x--', 'MarkerSize', 8, 'LineWidth', 1)
-xlabel('$\dot{m}$ [ml/h]'); ylabel('$\dot{Q}$ [W]'); grid on; title('BS2')
-legend('ambient', 'vacuum', 'location', 'northwest')
+xlabel('$\dot{m}$ [ml/h]'); ylabel('$\dot{Q}_{id}$ [W]'); grid on; title('BS2')
+legend('room', 'vacuum', 'location', 'northwest')
+
+% figure() % Efficiency
+% hold on
+% plot(Vdot, Qdot_r./Pavg, 'o--', 'MarkerSize', 8, 'LineWidth', 1)
+% plot(Vdot, Qdot./Pavg, 'x--', 'MarkerSize', 8, 'LineWidth', 1)
+% xlabel('$\dot{m}$ [ml/h]'); ylabel('$\eta$ [-]'); grid on; title('BS2')
+% legend('ambient', 'vacuum', 'location', 'northwest')
 
 reset(groot)
